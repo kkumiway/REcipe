@@ -71,28 +71,33 @@ body {
 
 /* 메시지 컨테이너 (프로필 사진과 메시지를 감싸는 요소) */
 .message-container {
-    display: flex;
+    /* display: flex; */
     align-items: center; /* 프로필 사진과 메시지를 수평 정렬 */
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /* 프로필 사진 스타일 */
 .profile-pic {
-    margin-top: 50px;
+    /* margin-top: 50px; */
     width: 30px; /* 프로필 사진의 크기 */
     height: 30px;
+    
 }
 
 /* 사용자 프로필 사진 스타일 */
 .profile-pic.user {
     position: relative;
-    right: -93%;
+    left: 92%;
+    top: 60%;
+    /* bottom: 1%; */
 }
 
 /* 챗봇 프로필 사진 스타일 */
 .profile-pic.bot {
     position: relative;
     right: -4%;
+    top: 20%;
 }
 
 /* 메시지 기본 스타일 */
@@ -100,7 +105,7 @@ body {
     position: relative;
     border-radius: 10px; /* 둥근 모서리 */
     padding: 15px 20px; /* 패딩 조정 */
-    margin-top: 40px;
+    margin-top: 10px;
     width: auto; /* 너비를 자동으로 설정 */
     min-width: 30%; /* 최소 너비 설정 */
     max-width: 80%; /* 최대 너비 설정 */    
@@ -115,10 +120,11 @@ body {
     background-color: #FFF0BD; /* 사용자 메시지 색상 */
     text-align: right;
     position: relative;
-    right: -55%;
+    float: right;
     width: auto;
     border-radius: 0.4em;
     margin-right: 10px; /* 오른쪽 여백 */
+    right: 10%
 }
 
 .message.user::after {
