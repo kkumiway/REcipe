@@ -13,7 +13,7 @@ body {
     background-color: #e6e6e6;
 }
 #chat-container {
-    width: 400px;
+    width: 600px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -43,4 +43,12 @@ body {
     color: black;
     padding: 10px 15px;
     cursor: pointer;
+}
+
+.message.user {
+    background-color: #FFF0BD; /* User message background color */
+    text-align: right;
+}
+.message.bot {
+    background-color: #C7DB9C; /* Bot message background color */
 }
