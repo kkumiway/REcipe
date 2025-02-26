@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # 환경 변수 가져오기
-api_key = os.getenv("Recipe_API_KEY")
+api_key = os.getenv("RECIPE_API_KEY")
 
 print("API Key:", api_key)
 
@@ -13,7 +13,7 @@ print("API Key:", api_key)
 load_dotenv()  
 
 # 환경 변수에서 API 키 가져오기
-api_key = os.getenv("Recipe_API_KEY")  
+api_key = os.getenv("RECIPE_API_KEY")  
 
 if api_key:
     print("API 키가 정상적으로 불러와졌습니다")
