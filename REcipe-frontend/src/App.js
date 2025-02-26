@@ -10,15 +10,54 @@ const apiKey = '발급받은 API키 입력';
 // OpenAI API 엔드포인트 주소를 변수로 저장
 const apiEndpoint = 'https://api.openai.com/v1/chat/completions'
 
+window.onload = function() {
+    // 첫 번째 챗봇 메시지
+    const firstMessage = "안녕하세요! 저는 RE:cipe예요. 어떤 재료가 있는지 알려주시면, 그 재료로 만들 수 있는 맛있는 레시피를 추천해 드릴게요!";
+
+    const profilePic = document.createElement('img');
+    profilePic.className = 'profile-pic bot';
+    profilePic.src = '../assets/profile-bot.png';  // 사용자와 챗봇의 프로필 사진을 구분
+
+    // 메시지 HTML 생성
+    const chatMessages = document.getElementById('chat-messages');
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('message-container');
+
+    const botMessage = document.createElement('div');
+    botMessage.classList.add('message', 'bot');
+    botMessage.innerText = firstMessage;
+
+    // 메시지 컨테이너에 추가
+    messageContainer.appendChild(profilePic);
+    messageContainer.appendChild(botMessage);
+    chatMessages.appendChild(messageContainer);
+
+    // 메시지 출력 후 스크롤을 맨 아래로 이동
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+};
+
 function addMessage(sender, message) {
-    // 새로운 div 생성
     const messageElement = document.createElement('div');
+    messageElement.className = 'message-container';
+
+    // 프로필 사진 추가
+    const profilePic = document.createElement('img');
+    profilePic.className = 'profile-pic '+ (sender === '나' ? 'user' : 'bot');
+    profilePic.src = sender === '나' ? '../assets/profile-user.png' : '../assets/profile-bot.png';  // 사용자와 챗봇의 프로필 사진을 구분
+
+    // 새로운 div 생성 (메시지의 전체 컨테이너)
+    const messageText = document.createElement('span');
     // 생성된 요소에 클래스 추가
-    messageElement.className = 'message ' + (sender === '나' ? 'user' : 'bot');
-     // 채팅 메시지 목록에 새로운 메시지 추가
-    messageElement.textContent = `${sender}: ${message}`;
+    messageText.className = 'message ' + (sender === '나' ? 'user' : 'bot');
+    messageText.textContent = message;
+
+    // 프로필 사진과 메시지를 포함하는 div에 추가
+    messageElement.appendChild(profilePic);
+    messageElement.appendChild(messageText);
+    
     chatMessages.prepend(messageElement);
 }
+
 
 // ChatGPT API 요청
 async function fetchAIResponse(prompt) {
