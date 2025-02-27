@@ -78,7 +78,7 @@ def get_naver_blog_titles_one_page(ingredient):
     print("\n🔍 [크롤링 중: 1 페이지]")
 
     # 페이지 로딩 대기 (JavaScript 실행을 위한 대기 시간)
-    time.sleep(5)
+    time.sleep(2)
 
     # 페이지 소스 가져오기
     soup = BeautifulSoup(driver.page_source, "html.parser")

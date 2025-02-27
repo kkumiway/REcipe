@@ -35,4 +35,18 @@ def get_youtube_video(menu_name: str):
     video_title = data["items"][0]["snippet"]["title"]
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     
-    return {"title": video_title, "url": video_url}
+    video_id = data["items"][0]["id"]["videoId"]
+    video_title = data["items"][0]["snippet"]["title"]
+    video_thumbnail = data["items"][0]["snippet"]["thumbnails"]["high"]["url"]
+    video_embed_url = f"https://www.youtube.com/embed/{video_id}"
+
+    return {
+        "title": video_title,
+        "embed_url": video_embed_url,
+        "thumbnail": video_thumbnail
+    }
+
+if __name__ == "__main__":
+    menu_name = "김치볶음밥"
+    result = get_youtube_video(menu_name)
+    print(result)
