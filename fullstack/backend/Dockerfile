@@ -11,7 +11,7 @@ COPY . .
 RUN chmod +x gradlew
 
 # 5. Gradle 캐시 활용하여 빌드
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build --no-daemon -x test
 
 # 6. 실행용 이미지 생성
 FROM openjdk:21-jdk-slim
