@@ -15,8 +15,52 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
-def get_naver_blog_titles_multiple_pages(ingredient, max_pages=3):
-    """Selenium을 사용하여 네이버 블로그 여러 페이지 크롤링"""
+# def get_naver_blog_titles_multiple_pages(ingredient, max_pages=3):
+#     """Selenium을 사용하여 네이버 블로그 여러 페이지 크롤링"""
+
+#     # Chrome WebDriver 설정
+#     chrome_options = Options()
+#     chrome_options.add_argument("--headless")  # GUI 없이 실행 (백그라운드 모드)
+#     chrome_options.add_argument("--disable-gpu")
+#     chrome_options.add_argument("--no-sandbox")
+
+#     # ✅ WebDriverManager를 사용하여 chromedriver 자동 다운로드 및 실행
+#     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+#     # 검색어를 기반으로 첫 번째 페이지 URL 설정
+#     base_url = f"https://section.blog.naver.com/Search/Post.naver?keyword={ingredient}+레시피"
+#     driver.get(base_url)
+
+#     blog_texts = []  # 크롤링한 데이터를 저장할 리스트
+
+#     for page in range(1, max_pages + 1):
+#         print(f"\n🔍 [크롤링 중: {page} 페이지]")
+
+#         # 페이지 로딩 대기 (JavaScript 실행을 위한 대기 시간)
+#         time.sleep(5)
+
+#         # 페이지 소스 가져오기
+#         soup = BeautifulSoup(driver.page_source, "html.parser")
+
+#         # 블로그 제목 크롤링
+#         for post in soup.find_all("span", class_="title"):
+#             title = post.get_text(strip=True)  # HTML 태그 제거하고 텍스트만 추출
+#             blog_texts.append(title)
+
+#         # ✅ 페이지 버튼 클릭 (페이지 번호를 찾아 클릭)
+#         try:
+#             page_button = driver.find_element("xpath", f'//a[@aria-label="{page+1}페이지"]')  # 다음 페이지 버튼
+#             page_button.click()
+#             time.sleep(5)  # 페이지가 로딩될 시간을 기다림
+#         except:
+#             print("⚠️ 다음 페이지 버튼을 찾을 수 없음. 크롤링 종료.")
+#             break  # 더 이상 다음 페이지가 없으면 크롤링 종료
+
+#     driver.quit()
+#     return blog_texts if blog_texts else ["트렌드 없음"]
+
+def get_naver_blog_titles_one_page(ingredient):
+    """Selenium을 사용하여 네이버 블로그 첫 번째 페이지 크롤링"""
 
     # Chrome WebDriver 설정
     chrome_options = Options()
@@ -31,39 +75,29 @@ def get_naver_blog_titles_multiple_pages(ingredient, max_pages=3):
     base_url = f"https://section.blog.naver.com/Search/Post.naver?keyword={ingredient}+레시피"
     driver.get(base_url)
 
-    blog_texts = []  # 크롤링한 데이터를 저장할 리스트
+    print("\n🔍 [크롤링 중: 1 페이지]")
 
-    for page in range(1, max_pages + 1):
-        print(f"\n🔍 [크롤링 중: {page} 페이지]")
+    # 페이지 로딩 대기 (JavaScript 실행을 위한 대기 시간)
+    time.sleep(5)
 
-        # 페이지 로딩 대기 (JavaScript 실행을 위한 대기 시간)
-        time.sleep(5)
+    # 페이지 소스 가져오기
+    soup = BeautifulSoup(driver.page_source, "html.parser")
 
-        # 페이지 소스 가져오기
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-
-        # 블로그 제목 크롤링
-        for post in soup.find_all("span", class_="title"):
-            title = post.get_text(strip=True)  # HTML 태그 제거하고 텍스트만 추출
-            blog_texts.append(title)
-
-        # ✅ 페이지 버튼 클릭 (페이지 번호를 찾아 클릭)
-        try:
-            page_button = driver.find_element("xpath", f'//a[@aria-label="{page+1}페이지"]')  # 다음 페이지 버튼
-            page_button.click()
-            time.sleep(5)  # 페이지가 로딩될 시간을 기다림
-        except:
-            print("⚠️ 다음 페이지 버튼을 찾을 수 없음. 크롤링 종료.")
-            break  # 더 이상 다음 페이지가 없으면 크롤링 종료
+    # 블로그 제목 크롤링
+    blog_texts = []
+    for post in soup.find_all("span", class_="title"):
+        title = post.get_text(strip=True)  # HTML 태그 제거하고 텍스트만 추출
+        blog_texts.append(title)
 
     driver.quit()
     return blog_texts if blog_texts else ["트렌드 없음"]
+
 
 def generate_recipe_from_trends(ingredient):
     """네이버 블로그 데이터를 기반으로 OpenAI API로 요리 레시피 생성"""
     
     # ✅ 네이버 블로그에서 최신 요리 트렌드 가져오기
-    blog_texts = get_naver_blog_titles_multiple_pages(ingredient)
+    blog_texts = get_naver_blog_titles_one_page(ingredient)
 
     # ✅ OpenAI API 프롬프트 작성
     prompt = f"""
