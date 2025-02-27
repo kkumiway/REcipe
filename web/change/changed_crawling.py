@@ -7,8 +7,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+import os
 from urllib.parse import quote
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, WebDriverException
+
+# ✅ OpenAI API 키 로드
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
 def get_naver_blog_titles_multiple_pages(ingredient, max_pages=3):
     """Selenium을 사용하여 네이버 블로그에서 레시피 관련 게시글 제목과 URL 크롤링"""
