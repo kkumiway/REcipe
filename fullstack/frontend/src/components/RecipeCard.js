@@ -35,21 +35,18 @@ const RecipeCard = ({ recipe }) => {
     return (
         <div className="recipe-card">
             <h2>{recipe.menuName}</h2>
-            <img src={recipe.menuImage} alt={recipe.menuName} />
-            <p>{recipe.menuTip}</p>
-
+            <img src={recipe.menuImage} alt={recipe.menuName}/>
             {/* 🥄 재료 리스트 */}
             <h3>재료</h3>
-            <ul>
-                {ingredients.length > 0 ? (
-                    ingredients.map((item, index) => <li key={index}>✅ {item}</li>)
-                ) : (
-                    <li>❌ 재료 정보 없음</li>
-                )}
-            </ul>
+            <p className="ingredients">
+                {ingredients.length > 0 ? `🥄 ${ingredients.join(" ")}` : "❌ 재료 정보 없음"}
+            </p>
 
             {/* 🍳 조리 과정 */}
             <h3>조리 과정</h3>
+            <p className= "menu-tip" >
+                {recipe.menuTip}
+            </p>
             <ul>
                 {recipeInfo.map((step, index) => <li key={index}>{step}</li>)}
             </ul>

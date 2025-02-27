@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import start.backend.entity.Recipe;
 import start.backend.service.RecipeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,7 @@ public class RecipeController {
 
     @GetMapping("/search/{ingredient}")
     public ResponseEntity<List<Recipe>> searchRecipe(@PathVariable String ingredient) throws JsonProcessingException {
+
         return ResponseEntity.ok(recipeService.searchRecipeByIngredient(ingredient));
     }
 }

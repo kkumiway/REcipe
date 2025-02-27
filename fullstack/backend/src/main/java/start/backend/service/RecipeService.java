@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import start.backend.entity.Recipe;
 import start.backend.repository.RecipeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,19 @@ public class RecipeService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public List<Recipe> searchRecipeByIngredient(String ingredient) throws JsonProcessingException {
-        List<Recipe> existingRecipes = recipeRepository.findByIngredient(ingredient);
+        List<Recipe> existingRecipes = new ArrayList<>();
+        Recipe recipe1 = new Recipe();
+        recipe1.setId(123L);
+        recipe1.setMenuName("제육볶음");
+        recipe1.setMenuImage("http://localhost:8080/image/복습용프로필.jpg");
+        recipe1.setIngredients("돼지고기, 고추장, 대파, 마늘");
+        recipe1.setRecipeInfo("1. 돼지고기를 얇게 썬다. 2. 양념을 만든다. 3. 고기를 볶는다.");
+        recipe1.setMenuTip("센 불에서 빠르게 볶아야 맛있음");
+        recipe1.setYoutubeTitle("마늘치킨 만드는 법");
+        recipe1.setYoutubeUrl("https://www.youtube.com/watch?v=abcdef1");
 
+        existingRecipes.add(recipe1);
+        // List<Recipe> existingRecipes = recipeRepository.findByIngredient(ingredient);
         if (!existingRecipes.isEmpty()) {
             return existingRecipes;
         }
