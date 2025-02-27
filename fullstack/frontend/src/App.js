@@ -1,11 +1,8 @@
 import React from "react";
+import Home from "./pages/Home";
 
 function App() {
-  return (
-      <div>
-        <h1>레시피 검색</h1>
-      </div>
-  );
+    return <Home />;
 }
 
 export default App;
