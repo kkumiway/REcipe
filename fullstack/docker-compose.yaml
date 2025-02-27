@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_service
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # root 사용자 비밀번호만 설정
+      MYSQL_DATABASE: ${MYSQL_DATABASE}  # 기본 데이터베이스 생성
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+
+  backend:
+    build: ./backend
+    container_name: backend_service
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update  # Hibernate 설정 (필요 시)
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - backend_logs:/app/logs  # 로그 저장
+
+  frontend:
+    build: ./frontend
+    container_name: frontend_service
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    volumes:
+      - frontend_build:/usr/share/nginx/html  # 프론트엔드 빌드 캐싱
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:  # MySQL 데이터 유지
+  backend_logs:  # 백엔드 로그 저장
+  frontend_build:  # 프론트엔드 빌드 캐싱
