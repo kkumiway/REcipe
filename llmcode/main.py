@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from llmcode.youtube_api import get_youtube_video
-from llmcode.crowling import generate_recipe_from_trends
+from llmcode.test import generate_recipe_from_trends
 from llmcode.image import get_recipe_image
 import json
 
